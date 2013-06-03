@@ -3,7 +3,9 @@ Xojo-SimpleSockets
 
 A Open Source Replacement for EasyTCPSocket and EasyUDPSocket for Xojo / RealBasic
 
-This project is not complete.
+
+SimpleTCPSocket - Complete
+SimpleUDPSocket - Not Started
 
 
 Copyright (C) 2013 Brandon Skrtich

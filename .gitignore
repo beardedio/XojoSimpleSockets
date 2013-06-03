@@ -6,6 +6,7 @@
 *Builds - *
 *.DS_Store
 *.obsolete
+*.obsolete_*
 Debug*.tar.gz
 
 

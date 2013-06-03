@@ -1,5 +1,5 @@
 <?xml version="1.0"?>
-<RBProject version="2012r2.1" FormatVersion="2" MinIDEVersion="20070100">
+<RBProject version="2013r1" FormatVersion="2" MinIDEVersion="20070100">
 <block type="Module" ID="1216907588">
  <ObjName>SimpleTCPSocket</ObjName>
  <ObjContainerID>0</ObjContainerID>
@@ -19,21 +19,79 @@
    <SourceLine>End Sub</SourceLine>
   </ItemSource>
  </HookInstance>
+ <HookInstance>
+  <ItemName>Error</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Sub Error()</SourceLine>
+   <SourceLine>RaiseEvent Error</SourceLine>
+   <SourceLine>End Sub</SourceLine>
+  </ItemSource>
+ </HookInstance>
+ <HookInstance>
+  <ItemName>SendComplete</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Sub SendComplete(userAborted as Boolean)</SourceLine>
+   <SourceLine>RaiseEvent SendComplete(userAborted)</SourceLine>
+   <SourceLine>End Sub</SourceLine>
+  </ItemSource>
+ </HookInstance>
+ <HookInstance>
+  <ItemName>SendProgress</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Function SendProgress(bytesSent as Integer, bytesLeft as Integer) As Boolean</SourceLine>
+   <SourceLine>Return RaiseEvent SendProgress(bytesSent, bytesLeft)</SourceLine>
+   <SourceLine>End Function</SourceLine>
+  </ItemSource>
+ </HookInstance>
+ <HookInstance>
+  <ItemName>DataAvailable</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Sub DataAvailable()</SourceLine>
+   <SourceLine>ProcessData()</SourceLine>
+   <SourceLine>End Sub</SourceLine>
+  </ItemSource>
+ </HookInstance>
  <Method>
   <ItemName>SendMessage</ItemName>
   <Compatibility></Compatibility>
   <Visible>1</Visible>
   <ItemSource>
    <TextEncoding>134217984</TextEncoding>
-   <SourceLine>Sub SendMessage(Command as Integer, Data as String)</SourceLine>
+   <SourceLine>Sub SendMessage(Command as Int64, Data as String)</SourceLine>
+   <SourceLine>Dim mb as New MemoryBlock(0)</SourceLine>
+   <SourceLine>Dim bs as New BinaryStream(mb)</SourceLine>
    <SourceLine></SourceLine>
+   <SourceLine>mb.LittleEndian = True</SourceLine>
+   <SourceLine>bs.LittleEndian = True</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>If Not Self.IsConnected Then Exit Sub</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>bs.WriteUInt64(8+Len(Data))</SourceLine>
+   <SourceLine>bs.WriteInt64(Command)</SourceLine>
+   <SourceLine>bs.Write(Data)</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>bs.Close</SourceLine>
+   <SourceLine>Self.Write(mb)</SourceLine>
+   <SourceLine>Self.Flush</SourceLine>
    <SourceLine>End Sub</SourceLine>
   </ItemSource>
   <TextEncoding>134217984</TextEncoding>
   <AliasName></AliasName>
   <ItemFlags>0</ItemFlags>
-  <Shared>0</Shared>
-  <ItemParams>Command as Integer, Data as String</ItemParams>
+  <IsShared>0</IsShared>
+  <ItemParams>Command as Int64, Data as String</ItemParams>
   <ItemResult></ItemResult>
  </Method>
  <Method>
@@ -49,7 +107,7 @@
   <TextEncoding>134217984</TextEncoding>
   <AliasName></AliasName>
   <ItemFlags>0</ItemFlags>
-  <Shared>0</Shared>
+  <IsShared>0</IsShared>
   <ItemParams>Timeout as Integer</ItemParams>
   <ItemResult>Boolean</ItemResult>
  </Method>
@@ -59,16 +117,57 @@
   <Visible>1</Visible>
   <ItemSource>
    <TextEncoding>134217984</TextEncoding>
-   <SourceLine>Function WaitForMessage(Command as Integer, Timeout as Integer) As String</SourceLine>
+   <SourceLine>Function WaitForMessage(Command as Int64, Timeout as Integer) As String</SourceLine>
    <SourceLine></SourceLine>
    <SourceLine>End Function</SourceLine>
   </ItemSource>
   <TextEncoding>134217984</TextEncoding>
   <AliasName></AliasName>
   <ItemFlags>0</ItemFlags>
-  <Shared>0</Shared>
-  <ItemParams>Command as Integer, Timeout as Integer</ItemParams>
+  <IsShared>0</IsShared>
+  <ItemParams>Command as Int64, Timeout as Integer</ItemParams>
   <ItemResult>String</ItemResult>
+ </Method>
+ <Method>
+  <ItemName>ProcessData</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Sub ProcessData()</SourceLine>
+   <SourceLine>Dim bs As BinaryStream</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>If Not WaitingForData Then</SourceLine>
+   <SourceLine>If Me.BytesAvailable &lt; 8 Then Exit Sub </SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>cmdNumber = 0</SourceLine>
+   <SourceLine>cmdData = ""</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>bs = New BinaryStream(Me.Read(8))</SourceLine>
+   <SourceLine>bs.LittleEndian = True</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>cmdAmountLeft = bs.ReadUInt64</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>if Me.BytesAvailable &gt;= cmdAmountLeft Then</SourceLine>
+   <SourceLine>Dim s As String = Me.Read(cmdAmountLeft)</SourceLine>
+   <SourceLine>bs = New BinaryStream(s)</SourceLine>
+   <SourceLine>bs.LittleEndian = True</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>cmdNumber = bs.ReadInt64</SourceLine>
+   <SourceLine>cmdData = bs.Read(cmdAmountLeft - 8)</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>RaiseEvent ReceivedMessage(cmdNumber, cmdData)</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>End If</SourceLine>
+   <SourceLine>End If</SourceLine>
+   <SourceLine>End Sub</SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <AliasName></AliasName>
+  <ItemFlags>33</ItemFlags>
+  <IsShared>0</IsShared>
+  <ItemParams></ItemParams>
+  <ItemResult></ItemResult>
  </Method>
  <Hook>
   <ItemName>Error</ItemName>
@@ -83,7 +182,7 @@
   <TextEncoding>134217984</TextEncoding>
   <ItemFlags>33</ItemFlags>
   <SystemFlags>0</SystemFlags>
-  <ItemParams>Command as Integer, Data as String</ItemParams>
+  <ItemParams>Command as Int64, Data as String</ItemParams>
   <ItemResult></ItemResult>
  </Hook>
  <Hook>
@@ -110,23 +209,82 @@
   <ItemParams>UserAborted as Boolean</ItemParams>
   <ItemResult></ItemResult>
  </Hook>
+ <Property>
+  <ItemName>WaitingForData</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>WaitingForData As Boolean = False</SourceLine>
+   <SourceLine></SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <ItemDeclaration>WaitingForData As Boolean = False</ItemDeclaration>
+  <ItemFlags>33</ItemFlags>
+  <IsShared>0</IsShared>
+ </Property>
+ <Property>
+  <ItemName>cmdData</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>cmdData As String</SourceLine>
+   <SourceLine></SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <ItemDeclaration>cmdData As String</ItemDeclaration>
+  <ItemFlags>33</ItemFlags>
+  <IsShared>0</IsShared>
+ </Property>
+ <Property>
+  <ItemName>cmdAmountLeft</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>cmdAmountLeft As UInt64 = 0</SourceLine>
+   <SourceLine></SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <ItemDeclaration>cmdAmountLeft As UInt64 = 0</ItemDeclaration>
+  <ItemFlags>33</ItemFlags>
+  <IsShared>0</IsShared>
+ </Property>
+ <Property>
+  <ItemName>cmdNumber</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>cmdNumber As Int64 = 0</SourceLine>
+   <SourceLine></SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <ItemDeclaration>cmdNumber As Int64 = 0</ItemDeclaration>
+  <ItemFlags>33</ItemFlags>
+  <IsShared>0</IsShared>
+ </Property>
  <ViewBehavior>
   <ViewProperty>
    <ObjName>Name</ObjName>
    <Visible>1</Visible>
    <PropertyGroup>ID</PropertyGroup>
+   <ItemType>String</ItemType>
    <InheritsFrom>TCPSocket</InheritsFrom>
   </ViewProperty>
   <ViewProperty>
    <ObjName>Index</ObjName>
    <Visible>1</Visible>
    <PropertyGroup>ID</PropertyGroup>
+   <ItemType>Integer</ItemType>
    <InheritsFrom>TCPSocket</InheritsFrom>
   </ViewProperty>
   <ViewProperty>
    <ObjName>Super</ObjName>
    <Visible>1</Visible>
    <PropertyGroup>ID</PropertyGroup>
+   <ItemType>String</ItemType>
    <InheritsFrom>TCPSocket</InheritsFrom>
   </ViewProperty>
   <ViewProperty>
