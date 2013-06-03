@@ -146,19 +146,26 @@
    <SourceLine>bs = New BinaryStream(Me.Read(8))</SourceLine>
    <SourceLine>bs.LittleEndian = True</SourceLine>
    <SourceLine></SourceLine>
-   <SourceLine>cmdAmountLeft = bs.ReadUInt64</SourceLine>
+   <SourceLine>cmdLength = bs.ReadUInt64</SourceLine>
    <SourceLine></SourceLine>
-   <SourceLine>if Me.BytesAvailable &gt;= cmdAmountLeft Then</SourceLine>
-   <SourceLine>Dim s As String = Me.Read(cmdAmountLeft)</SourceLine>
-   <SourceLine>bs = New BinaryStream(s)</SourceLine>
+   <SourceLine>WaitingForData = True</SourceLine>
+   <SourceLine>End If</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>If WaitingForData And Me.BytesAvailable &gt;= cmdLength Then</SourceLine>
+   <SourceLine>bs = New BinaryStream(Me.Read(cmdLength))</SourceLine>
    <SourceLine>bs.LittleEndian = True</SourceLine>
    <SourceLine></SourceLine>
    <SourceLine>cmdNumber = bs.ReadInt64</SourceLine>
-   <SourceLine>cmdData = bs.Read(cmdAmountLeft - 8)</SourceLine>
+   <SourceLine>cmdData = bs.Read(cmdLength - 8)</SourceLine>
    <SourceLine></SourceLine>
    <SourceLine>RaiseEvent ReceivedMessage(cmdNumber, cmdData)</SourceLine>
    <SourceLine></SourceLine>
+   <SourceLine>WaitingForData = False</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>If Me.BytesAvailable &gt; 0 Then</SourceLine>
+   <SourceLine>ProcessData</SourceLine>
    <SourceLine>End If</SourceLine>
+   <SourceLine></SourceLine>
    <SourceLine>End If</SourceLine>
    <SourceLine>End Sub</SourceLine>
   </ItemSource>
@@ -215,7 +222,7 @@
   <Visible>1</Visible>
   <ItemSource>
    <TextEncoding>134217984</TextEncoding>
-   <SourceLine>WaitingForData As Boolean = False</SourceLine>
+   <SourceLine>WaitingForData As Boolean</SourceLine>
    <SourceLine></SourceLine>
   </ItemSource>
   <TextEncoding>134217984</TextEncoding>
@@ -238,16 +245,16 @@
   <IsShared>0</IsShared>
  </Property>
  <Property>
-  <ItemName>cmdAmountLeft</ItemName>
+  <ItemName>cmdLength</ItemName>
   <Compatibility></Compatibility>
   <Visible>1</Visible>
   <ItemSource>
    <TextEncoding>134217984</TextEncoding>
-   <SourceLine>cmdAmountLeft As UInt64 = 0</SourceLine>
+   <SourceLine>cmdLength As UInt64 = 0</SourceLine>
    <SourceLine></SourceLine>
   </ItemSource>
   <TextEncoding>134217984</TextEncoding>
-  <ItemDeclaration>cmdAmountLeft As UInt64 = 0</ItemDeclaration>
+  <ItemDeclaration>cmdLength As UInt64 = 0</ItemDeclaration>
   <ItemFlags>33</ItemFlags>
   <IsShared>0</IsShared>
  </Property>
@@ -257,7 +264,7 @@
   <Visible>1</Visible>
   <ItemSource>
    <TextEncoding>134217984</TextEncoding>
-   <SourceLine>cmdNumber As Int64 = 0</SourceLine>
+   <SourceLine>cmdNumber As Int64</SourceLine>
    <SourceLine></SourceLine>
   </ItemSource>
   <TextEncoding>134217984</TextEncoding>
