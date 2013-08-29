@@ -1,5 +1,5 @@
 <?xml version="1.0"?>
-<RBProject version="2013r2" FormatVersion="2" MinIDEVersion="20070100">
+<RBProject version="2012r2.1" FormatVersion="2" MinIDEVersion="20070100">
 <block type="Module" ID="1216907588">
  <ObjName>SimpleTCPSocket</ObjName>
  <ObjContainerID>0</ObjContainerID>
@@ -90,7 +90,7 @@
   <TextEncoding>134217984</TextEncoding>
   <AliasName></AliasName>
   <ItemFlags>0</ItemFlags>
-  <IsShared>0</IsShared>
+  <Shared>0</Shared>
   <ItemParams>Command as Int64, Data as String</ItemParams>
   <ItemResult></ItemResult>
  </Method>
@@ -107,7 +107,7 @@
   <TextEncoding>134217984</TextEncoding>
   <AliasName></AliasName>
   <ItemFlags>0</ItemFlags>
-  <IsShared>0</IsShared>
+  <Shared>0</Shared>
   <ItemParams>Timeout as Integer</ItemParams>
   <ItemResult>Boolean</ItemResult>
  </Method>
@@ -124,7 +124,7 @@
   <TextEncoding>134217984</TextEncoding>
   <AliasName></AliasName>
   <ItemFlags>0</ItemFlags>
-  <IsShared>0</IsShared>
+  <Shared>0</Shared>
   <ItemParams>Command as Int64, Timeout as Integer</ItemParams>
   <ItemResult>String</ItemResult>
  </Method>
@@ -136,6 +136,14 @@
    <TextEncoding>134217984</TextEncoding>
    <SourceLine>Sub ProcessData()</SourceLine>
    <SourceLine>Dim bs As BinaryStream</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>Dim s, s0 As String</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>s = me.Lookahead</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>'bs = New BinaryStream(me.Lookahead)</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>s0 = Hex(s)</SourceLine>
    <SourceLine></SourceLine>
    <SourceLine>If Not WaitingForData Then</SourceLine>
    <SourceLine>If Me.BytesAvailable &lt; 8 Then Exit Sub </SourceLine>
@@ -172,7 +180,7 @@
   <TextEncoding>134217984</TextEncoding>
   <AliasName></AliasName>
   <ItemFlags>33</ItemFlags>
-  <IsShared>0</IsShared>
+  <Shared>0</Shared>
   <ItemParams></ItemParams>
   <ItemResult></ItemResult>
  </Method>
@@ -228,7 +236,7 @@
   <TextEncoding>134217984</TextEncoding>
   <ItemDeclaration>WaitingForData As Boolean = False</ItemDeclaration>
   <ItemFlags>33</ItemFlags>
-  <IsShared>0</IsShared>
+  <Shared>0</Shared>
  </Property>
  <Property>
   <ItemName>cmdData</ItemName>
@@ -242,7 +250,7 @@
   <TextEncoding>134217984</TextEncoding>
   <ItemDeclaration>cmdData As String</ItemDeclaration>
   <ItemFlags>33</ItemFlags>
-  <IsShared>0</IsShared>
+  <Shared>0</Shared>
  </Property>
  <Property>
   <ItemName>cmdLength</ItemName>
@@ -256,7 +264,7 @@
   <TextEncoding>134217984</TextEncoding>
   <ItemDeclaration>cmdLength As UInt64 = 0</ItemDeclaration>
   <ItemFlags>33</ItemFlags>
-  <IsShared>0</IsShared>
+  <Shared>0</Shared>
  </Property>
  <Property>
   <ItemName>cmdNumber</ItemName>
@@ -270,7 +278,7 @@
   <TextEncoding>134217984</TextEncoding>
   <ItemDeclaration>cmdNumber As Int64 = 0</ItemDeclaration>
   <ItemFlags>33</ItemFlags>
-  <IsShared>0</IsShared>
+  <Shared>0</Shared>
  </Property>
  <ViewBehavior>
   <ViewProperty>
