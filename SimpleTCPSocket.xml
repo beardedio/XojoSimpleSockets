@@ -1,5 +1,5 @@
-<?xml version="1.0"?>
-<RBProject version="2012r2.1" FormatVersion="2" MinIDEVersion="20070100">
+<?xml version="1.0" encoding="UTF-8"?>
+<RBProject version="2013r4.1" FormatVersion="2" MinIDEVersion="20070100">
 <block type="Module" ID="1216907588">
  <ObjName>SimpleTCPSocket</ObjName>
  <ObjContainerID>0</ObjContainerID>
@@ -70,8 +70,8 @@
   <ItemSource>
    <TextEncoding>134217984</TextEncoding>
    <SourceLine>Sub SendMessage(Command as Int64, Data as String)</SourceLine>
-   <SourceLine>Dim mb as New MemoryBlock(0)</SourceLine>
-   <SourceLine>Dim bs as New BinaryStream(mb)</SourceLine>
+   <SourceLine>Dim mb As New MemoryBlock(0)</SourceLine>
+   <SourceLine>Dim bs As New BinaryStream(mb)</SourceLine>
    <SourceLine></SourceLine>
    <SourceLine>mb.LittleEndian = True</SourceLine>
    <SourceLine>bs.LittleEndian = True</SourceLine>
@@ -84,13 +84,15 @@
    <SourceLine></SourceLine>
    <SourceLine>bs.Close</SourceLine>
    <SourceLine>Self.Write(mb)</SourceLine>
-   <SourceLine>Self.Flush</SourceLine>
+   <SourceLine>//If System.EnvironmentVariable("XOJO_USE_NEW_TCPSOCKET") &lt;&gt; "" Then</SourceLine>
+   <SourceLine>//Self.Flush</SourceLine>
+   <SourceLine>//End If</SourceLine>
    <SourceLine>End Sub</SourceLine>
   </ItemSource>
   <TextEncoding>134217984</TextEncoding>
   <AliasName></AliasName>
   <ItemFlags>0</ItemFlags>
-  <Shared>0</Shared>
+  <IsShared>0</IsShared>
   <ItemParams>Command as Int64, Data as String</ItemParams>
   <ItemResult></ItemResult>
  </Method>
@@ -107,7 +109,7 @@
   <TextEncoding>134217984</TextEncoding>
   <AliasName></AliasName>
   <ItemFlags>0</ItemFlags>
-  <Shared>0</Shared>
+  <IsShared>0</IsShared>
   <ItemParams>Timeout as Integer</ItemParams>
   <ItemResult>Boolean</ItemResult>
  </Method>
@@ -124,7 +126,7 @@
   <TextEncoding>134217984</TextEncoding>
   <AliasName></AliasName>
   <ItemFlags>0</ItemFlags>
-  <Shared>0</Shared>
+  <IsShared>0</IsShared>
   <ItemParams>Command as Int64, Timeout as Integer</ItemParams>
   <ItemResult>String</ItemResult>
  </Method>
@@ -180,7 +182,30 @@
   <TextEncoding>134217984</TextEncoding>
   <AliasName></AliasName>
   <ItemFlags>33</ItemFlags>
-  <Shared>0</Shared>
+  <IsShared>0</IsShared>
+  <ItemParams></ItemParams>
+  <ItemResult></ItemResult>
+ </Method>
+ <Method>
+  <ItemName>Constructor</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Sub Constructor()</SourceLine>
+   <SourceLine>// Calling the overridden superclass constructor.</SourceLine>
+   <SourceLine>// Note that this may need modifications if there are multiple constructor choices.</SourceLine>
+   <SourceLine>// Possible constructor calls:</SourceLine>
+   <SourceLine>// Constructor() -- From TCPSocket</SourceLine>
+   <SourceLine>// Constructor() -- From SocketCore</SourceLine>
+   <SourceLine>Super.Constructor</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>End Sub</SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <AliasName></AliasName>
+  <ItemFlags>4096</ItemFlags>
+  <IsShared>0</IsShared>
   <ItemParams></ItemParams>
   <ItemResult></ItemResult>
  </Method>
@@ -236,7 +261,7 @@
   <TextEncoding>134217984</TextEncoding>
   <ItemDeclaration>WaitingForData As Boolean = False</ItemDeclaration>
   <ItemFlags>33</ItemFlags>
-  <Shared>0</Shared>
+  <IsShared>0</IsShared>
  </Property>
  <Property>
   <ItemName>cmdData</ItemName>
@@ -250,7 +275,7 @@
   <TextEncoding>134217984</TextEncoding>
   <ItemDeclaration>cmdData As String</ItemDeclaration>
   <ItemFlags>33</ItemFlags>
-  <Shared>0</Shared>
+  <IsShared>0</IsShared>
  </Property>
  <Property>
   <ItemName>cmdLength</ItemName>
@@ -264,7 +289,7 @@
   <TextEncoding>134217984</TextEncoding>
   <ItemDeclaration>cmdLength As UInt64 = 0</ItemDeclaration>
   <ItemFlags>33</ItemFlags>
-  <Shared>0</Shared>
+  <IsShared>0</IsShared>
  </Property>
  <Property>
   <ItemName>cmdNumber</ItemName>
@@ -278,7 +303,7 @@
   <TextEncoding>134217984</TextEncoding>
   <ItemDeclaration>cmdNumber As Int64 = 0</ItemDeclaration>
   <ItemFlags>33</ItemFlags>
-  <Shared>0</Shared>
+  <IsShared>0</IsShared>
  </Property>
  <ViewBehavior>
   <ViewProperty>
@@ -286,42 +311,36 @@
    <Visible>1</Visible>
    <PropertyGroup>ID</PropertyGroup>
    <ItemType>String</ItemType>
-   <InheritsFrom>TCPSocket</InheritsFrom>
   </ViewProperty>
   <ViewProperty>
    <ObjName>Index</ObjName>
    <Visible>1</Visible>
    <PropertyGroup>ID</PropertyGroup>
    <ItemType>Integer</ItemType>
-   <InheritsFrom>TCPSocket</InheritsFrom>
   </ViewProperty>
   <ViewProperty>
    <ObjName>Super</ObjName>
    <Visible>1</Visible>
    <PropertyGroup>ID</PropertyGroup>
    <ItemType>String</ItemType>
-   <InheritsFrom>TCPSocket</InheritsFrom>
   </ViewProperty>
   <ViewProperty>
    <ObjName>Left</ObjName>
    <Visible>1</Visible>
    <PropertyGroup>Position</PropertyGroup>
    <ItemType>Integer</ItemType>
-   <InheritsFrom>TCPSocket</InheritsFrom>
   </ViewProperty>
   <ViewProperty>
    <ObjName>Top</ObjName>
    <Visible>1</Visible>
    <PropertyGroup>Position</PropertyGroup>
    <ItemType>Integer</ItemType>
-   <InheritsFrom>TCPSocket</InheritsFrom>
   </ViewProperty>
   <ViewProperty>
    <ObjName>Address</ObjName>
    <Visible>1</Visible>
    <PropertyGroup>Behavior</PropertyGroup>
    <ItemType>String</ItemType>
-   <InheritsFrom>TCPSocket</InheritsFrom>
   </ViewProperty>
   <ViewProperty>
    <ObjName>Port</ObjName>
@@ -329,7 +348,6 @@
    <PropertyGroup>Behavior</PropertyGroup>
    <PropertyValue>0</PropertyValue>
    <ItemType>Integer</ItemType>
-   <InheritsFrom>TCPSocket</InheritsFrom>
   </ViewProperty>
  </ViewBehavior>
 </block>
