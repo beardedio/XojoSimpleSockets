@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<RBProject version="2013r4.1" FormatVersion="2" MinIDEVersion="20070100">
+<RBProject version="2014r1.1" FormatVersion="2" MinIDEVersion="20070100">
 <block type="Module" ID="1216907588">
  <ObjName>SimpleTCPSocket</ObjName>
  <ObjContainerID>0</ObjContainerID>
@@ -83,9 +83,9 @@
    <SourceLine>bs.Write(Data)</SourceLine>
    <SourceLine></SourceLine>
    <SourceLine>bs.Close</SourceLine>
-   <SourceLine>Self.Write(mb)</SourceLine>
+   <SourceLine>Me.Write(mb)</SourceLine>
    <SourceLine>//If System.EnvironmentVariable("XOJO_USE_NEW_TCPSOCKET") &lt;&gt; "" Then</SourceLine>
-   <SourceLine>//Self.Flush</SourceLine>
+   <SourceLine>Me.Flush</SourceLine>
    <SourceLine>//End If</SourceLine>
    <SourceLine>End Sub</SourceLine>
   </ItemSource>
